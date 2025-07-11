@@ -3,6 +3,40 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   @apply font-poppins bg-darkBg text-white;
+}
+
+body {
+  @apply bg-darkBg text-white font-inter transition-colors duration-300;
+}
+
+.dark body {
+  @apply bg-darkBg text-white;
+}
+
+body:not(.dark) {
+  @apply bg-lightBg text-black;
+} */
+
+/* Your dark/light mode styles */
+body {
+  @apply bg-darkBg text-white font-inter transition-colors duration-300;
+}
+
+.dark body {
+  @apply bg-darkBg text-white;
+}
+
+body:not(.dark) {
+  @apply bg-lightBg text-black;
+}
+
+/* Optional custom classes */
+.glass {
+  @apply bg-white/10 backdrop-blur-md border border-white/20 rounded-xl shadow-lg;
+}
+
+body {
+  @apply transition-colors duration-500;
 }
