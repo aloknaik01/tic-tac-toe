@@ -1,7 +1,6 @@
 import { useState } from "react";
-import ModeSelector from "./components/ModeSelector/ModeSelector";
-import ColorTest from "./components/ui/ColorTest";
 import DarkModeToggle from "./components/ui/DarkModeToggle";
+import { useGameModeContext } from "./context/GameModeContext";
 function App() {
   const [mode, setMode] = useState(null);
   const [dark, setDark] = useState(true);
@@ -15,31 +14,16 @@ function App() {
       document.documentElement.classList.toggle("dark");
       setDark(!dark);
     };
+
+    // Game Mode Context
+    const { gameMode } = useGameModeContext();
   }
   return (
     <>
-      <div className="min-h-screen flex flex-col items-center justify-center gap-4">
-        <h1 className="text-4xl font-bold text-neonPink">Tic Tac Toe</h1>
+      <div className="min-h-screen flex flex-col items-center justify-center">
         <DarkModeToggle />
-        <div
-          className="
-  p-4 rounded
-  bg-white dark:bg-darkBg
-  text-black dark:text-white
-"
-        >
-          Hello Dark Mode!
-        </div>
-
-        <div className="
-  p-6 rounded-lg
-  bg-neonPink text-white
-  dark:bg-neonBlue dark:text-black
-">
-  Neon Button
-</div>
+        {!gameMode ? <GameModeSelector /> : <GameBoard />}
       </div>
-      <ColorTest />
     </>
   );
 }
