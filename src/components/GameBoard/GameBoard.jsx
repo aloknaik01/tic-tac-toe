@@ -1,11 +1,31 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getBestMove } from "../../utils/ai.js";
+import { useGameModeContext } from "../../context/GameModeContext";
 
 const GameBoard = () => {
+  const { gameMode } = useGameModeContext();
+
   const [board, setBoard] = useState(Array(9).fill(null));
   const [currentPlayer, setCurrentPlayer] = useState("X");
-  const [winner, SetWinner] = useState(null);
+  const [winner, setWinner] = useState(null);
 
-  const handleClick = (index) => {
+  const isPvC = gameMode === "pvc";
+  const isAIturn = isPvC && currentPlayer === "O" && !winner;
+
+  // ✅ AI automatically makes its move
+  useEffect(() => {
+    if (isAIturn) {
+      const timeout = setTimeout(() => {
+        const bestMove = getBestMove(board, "O", "X");
+        if (bestMove.index != null) {
+          makeMove(bestMove.index);
+        }
+      }, 600);
+      return () => clearTimeout(timeout);
+    }
+  }, [isAIturn, board]);
+
+  const makeMove = (index) => {
     if (board[index] || winner) return;
 
     const newBoard = [...board];
@@ -20,6 +40,11 @@ const GameBoard = () => {
     } else {
       setCurrentPlayer(currentPlayer === "X" ? "O" : "X");
     }
+  };
+
+  const handleClick = (index) => {
+    if (isAIturn) return; // disable clicking during AI's turn
+    makeMove(index);
   };
 
   const resetGame = () => {
